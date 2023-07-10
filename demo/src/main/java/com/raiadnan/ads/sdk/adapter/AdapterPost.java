@@ -139,7 +139,6 @@ public class AdapterPost extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     Constant.FAN_NATIVE_ID,
                     Constant.APPLOVIN_NATIVE_MANUAL_ID,
                     Constant.APPLOVIN_BANNER_MREC_ZONE_ID,
-                    Constant.WORTISE_NATIVE_ID,
                     sharedPref.getIsDarkTheme(),
                     false,
                     Constant.NATIVE_STYLE,

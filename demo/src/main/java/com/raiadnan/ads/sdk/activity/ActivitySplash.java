@@ -76,13 +76,7 @@ public class ActivitySplash extends AppCompatActivity {
                                 requestConfig();
                             }
                             break;
-                        case WORTISE:
-                            if (!Constant.WORTISE_APP_OPEN_AD_ID.equals("0")) {
-                                ((MyApplication) getApplication()).showAdIfAvailable(ActivitySplash.this, this::requestConfig);
-                            } else {
-                                requestConfig();
-                            }
-                            break;
+
                         default:
                             requestConfig();
                             break;
@@ -143,8 +137,6 @@ public class ActivitySplash extends AppCompatActivity {
                 .setStartappAppId(Constant.STARTAPP_APP_ID)
                 .setUnityGameId(Constant.UNITY_GAME_ID)
                 .setAppLovinSdkKey(getResources().getString(R.string.applovin_sdk_key))
-                .setIronSourceAppKey(Constant.IRONSOURCE_APP_KEY)
-                .setWortiseAppId(Constant.WORTISE_APP_ID)
                 .setDebug(BuildConfig.DEBUG)
                 .build();
     }
@@ -158,7 +150,6 @@ public class ActivitySplash extends AppCompatActivity {
                     .setAdMobAppOpenId(Constant.ADMOB_APP_OPEN_AD_ID)
                     .setAdManagerAppOpenId(Constant.GOOGLE_AD_MANAGER_APP_OPEN_AD_ID)
                     .setApplovinAppOpenId(Constant.APPLOVIN_APP_OPEN_AP_ID)
-                    .setWortiseAppOpenId(Constant.WORTISE_APP_OPEN_AD_ID)
                     .build(this::startMainActivity);
         } else {
             startMainActivity();

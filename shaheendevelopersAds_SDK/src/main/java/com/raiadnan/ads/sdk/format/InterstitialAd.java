@@ -46,10 +46,6 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAdLoadCallback;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.ironsource.mediationsdk.IronSource;
-import com.ironsource.mediationsdk.adunit.adapter.utility.AdInfo;
-import com.ironsource.mediationsdk.logger.IronSourceError;
-import com.ironsource.mediationsdk.sdk.LevelPlayInterstitialListener;
 import com.raiadnan.ads.sdk.helper.AppLovinCustomEventInterstitial;
 import com.raiadnan.ads.sdk.util.OnInterstitialAdDismissedListener;
 import com.raiadnan.ads.sdk.util.OnInterstitialAdShowedListener;
@@ -79,7 +75,6 @@ public class InterstitialAd {
         private MaxInterstitialAd maxInterstitialAd;
         public AppLovinInterstitialAdDialog appLovinInterstitialAdDialog;
         public AppLovinAd appLovinAd;
-        public com.wortise.ads.interstitial.InterstitialAd wortiseInterstitialAd;
         private int retryAttempt;
         private int counter = 1;
 
@@ -422,83 +417,6 @@ public class InterstitialAd {
                     case MOPUB:
                         //Mopub has been acquired by AppLovin
                         break;
-
-                    case IRONSOURCE:
-                    case FAN_BIDDING_IRONSOURCE:
-                        IronSource.setLevelPlayInterstitialListener(new LevelPlayInterstitialListener() {
-                            @Override
-                            public void onAdReady(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdReady");
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(IronSourceError ironSourceError) {
-                                Log.d(TAG, "onInterstitialAdLoadFailed" + " " + ironSourceError);
-                                loadBackupInterstitialAd();
-                            }
-
-                            @Override
-                            public void onAdOpened(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdOpened");
-                            }
-
-                            @Override
-                            public void onAdShowSucceeded(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowSucceeded");
-                            }
-
-                            @Override
-                            public void onAdShowFailed(IronSourceError ironSourceError, AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowFailed" + " " + ironSourceError);
-                                loadBackupInterstitialAd();
-                            }
-
-                            @Override
-                            public void onAdClicked(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClicked");
-                            }
-
-                            @Override
-                            public void onAdClosed(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClosed");
-                                loadInterstitialAd();
-                            }
-                        });
-                        IronSource.loadInterstitial();
-                        break;
-
-                    case WORTISE:
-                        wortiseInterstitialAd = new com.wortise.ads.interstitial.InterstitialAd(activity, wortiseInterstitialId);
-                        wortiseInterstitialAd.setListener(new com.wortise.ads.interstitial.InterstitialAd.Listener() {
-                            @Override
-                            public void onInterstitialClicked(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-
-                            @Override
-                            public void onInterstitialDismissed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                loadInterstitialAd();
-                                Log.d(TAG, "[Wortise] Interstitial Ad dismissed");
-                            }
-
-                            @Override
-                            public void onInterstitialFailed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd, @NonNull com.wortise.ads.AdError adError) {
-                                loadBackupInterstitialAd();
-                                Log.d(TAG, "[Wortise] Failed to load Interstitial Ad");
-                            }
-
-                            @Override
-                            public void onInterstitialLoaded(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                Log.d(TAG, "[Wortise] Interstitial Ad loaded");
-                            }
-
-                            @Override
-                            public void onInterstitialShown(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-                        });
-                        wortiseInterstitialAd.loadAd();
-                        break;
                 }
             }
         }
@@ -726,78 +644,6 @@ public class InterstitialAd {
                         break;
 
                     case IRONSOURCE:
-                    case FAN_BIDDING_IRONSOURCE:
-                        IronSource.setLevelPlayInterstitialListener(new LevelPlayInterstitialListener() {
-                            @Override
-                            public void onAdReady(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdReady");
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(IronSourceError ironSourceError) {
-                                Log.d(TAG, "onInterstitialAdLoadFailed" + " " + ironSourceError);
-                            }
-
-                            @Override
-                            public void onAdOpened(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdOpened");
-                            }
-
-                            @Override
-                            public void onAdShowSucceeded(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowSucceeded");
-                            }
-
-                            @Override
-                            public void onAdShowFailed(IronSourceError ironSourceError, AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowFailed" + " " + ironSourceError);
-                            }
-
-                            @Override
-                            public void onAdClicked(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClicked");
-                            }
-
-                            @Override
-                            public void onAdClosed(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClosed");
-                                loadInterstitialAd();
-                            }
-                        });
-                        IronSource.loadInterstitial();
-                        break;
-
-                    case WORTISE:
-                        wortiseInterstitialAd = new com.wortise.ads.interstitial.InterstitialAd(activity, wortiseInterstitialId);
-                        wortiseInterstitialAd.setListener(new com.wortise.ads.interstitial.InterstitialAd.Listener() {
-                            @Override
-                            public void onInterstitialClicked(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-
-                            @Override
-                            public void onInterstitialDismissed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                loadInterstitialAd();
-                                Log.d(TAG, "[Wortise] [Backup] Interstitial Ad dismissed");
-                            }
-
-                            @Override
-                            public void onInterstitialFailed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd, @NonNull com.wortise.ads.AdError adError) {
-                                Log.d(TAG, "[Wortise] [Backup] Failed to load Interstitial Ad");
-                            }
-
-                            @Override
-                            public void onInterstitialLoaded(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                Log.d(TAG, "[Wortise] [Backup] Interstitial Ad loaded");
-                            }
-
-                            @Override
-                            public void onInterstitialShown(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-                        });
-                        wortiseInterstitialAd.loadAd();
-                        break;
 
                     case NONE:
                         //do nothing
@@ -902,21 +748,7 @@ public class InterstitialAd {
                             break;
 
                         case IRONSOURCE:
-                        case FAN_BIDDING_IRONSOURCE:
-                            if (IronSource.isInterstitialReady()) {
-                                IronSource.showInterstitial(ironSourceInterstitialId);
-                            } else {
-                                showBackupInterstitialAd();
-                            }
-                            break;
 
-                        case WORTISE:
-                            if (wortiseInterstitialAd != null && wortiseInterstitialAd.isAvailable()) {
-                                wortiseInterstitialAd.showAd();
-                            } else {
-                                showBackupInterstitialAd();
-                            }
-                            break;
                     }
                     counter = 1;
                 } else {
@@ -1001,17 +833,6 @@ public class InterstitialAd {
                         break;
 
                     case IRONSOURCE:
-                    case FAN_BIDDING_IRONSOURCE:
-                        if (IronSource.isInterstitialReady()) {
-                            IronSource.showInterstitial(ironSourceInterstitialId);
-                        }
-                        break;
-
-                    case WORTISE:
-                        if (wortiseInterstitialAd != null && wortiseInterstitialAd.isAvailable()) {
-                            wortiseInterstitialAd.showAd();
-                        }
-                        break;
 
                     case NONE:
                         //do nothing
@@ -1252,82 +1073,7 @@ public class InterstitialAd {
                         break;
 
                     case IRONSOURCE:
-                    case FAN_BIDDING_IRONSOURCE:
-                        IronSource.setLevelPlayInterstitialListener(new LevelPlayInterstitialListener() {
-                            @Override
-                            public void onAdReady(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdReady");
-                            }
 
-                            @Override
-                            public void onAdLoadFailed(IronSourceError ironSourceError) {
-                                Log.d(TAG, "onInterstitialAdLoadFailed" + " " + ironSourceError);
-                                loadBackupInterstitialAd(onInterstitialAdDismissedListener);
-                            }
-
-                            @Override
-                            public void onAdOpened(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdOpened");
-                            }
-
-                            @Override
-                            public void onAdShowSucceeded(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowSucceeded");
-                            }
-
-                            @Override
-                            public void onAdShowFailed(IronSourceError ironSourceError, AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowFailed" + " " + ironSourceError);
-                                loadBackupInterstitialAd(onInterstitialAdDismissedListener);
-                            }
-
-                            @Override
-                            public void onAdClicked(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClicked");
-                            }
-
-                            @Override
-                            public void onAdClosed(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClosed");
-                                loadInterstitialAd(onInterstitialAdDismissedListener);
-                                onInterstitialAdDismissedListener.onInterstitialAdDismissed();
-                            }
-                        });
-                        IronSource.loadInterstitial();
-                        break;
-
-                    case WORTISE:
-                        wortiseInterstitialAd = new com.wortise.ads.interstitial.InterstitialAd(activity, wortiseInterstitialId);
-                        wortiseInterstitialAd.setListener(new com.wortise.ads.interstitial.InterstitialAd.Listener() {
-                            @Override
-                            public void onInterstitialClicked(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-
-                            @Override
-                            public void onInterstitialDismissed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                loadInterstitialAd();
-                                onInterstitialAdDismissedListener.onInterstitialAdDismissed();
-                                Log.d(TAG, "[Wortise] Interstitial Ad dismissed");
-                            }
-
-                            @Override
-                            public void onInterstitialFailed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd, @NonNull com.wortise.ads.AdError adError) {
-                                loadBackupInterstitialAd(onInterstitialAdDismissedListener);
-                                Log.d(TAG, "[Wortise] Failed to load Interstitial Ad");
-                            }
-
-                            @Override
-                            public void onInterstitialLoaded(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                Log.d(TAG, "[Wortise] Interstitial Ad loaded");
-                            }
-
-                            @Override
-                            public void onInterstitialShown(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-                        });
-                        wortiseInterstitialAd.loadAd();
                         break;
                 }
             }
@@ -1559,82 +1305,6 @@ public class InterstitialAd {
                         //Mopub has been acquired by AppLovin
                         break;
 
-                    case IRONSOURCE:
-                    case FAN_BIDDING_IRONSOURCE:
-                        IronSource.setLevelPlayInterstitialListener(new LevelPlayInterstitialListener() {
-                            @Override
-                            public void onAdReady(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdReady");
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(IronSourceError ironSourceError) {
-                                Log.d(TAG, "onInterstitialAdLoadFailed" + " " + ironSourceError);
-                            }
-
-                            @Override
-                            public void onAdOpened(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdOpened");
-                            }
-
-                            @Override
-                            public void onAdShowSucceeded(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowSucceeded");
-                            }
-
-                            @Override
-                            public void onAdShowFailed(IronSourceError ironSourceError, AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdShowFailed" + " " + ironSourceError);
-                            }
-
-                            @Override
-                            public void onAdClicked(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClicked");
-                            }
-
-                            @Override
-                            public void onAdClosed(AdInfo adInfo) {
-                                Log.d(TAG, "onInterstitialAdClosed");
-                                loadInterstitialAd(onInterstitialAdDismissedListener);
-                                onInterstitialAdDismissedListener.onInterstitialAdDismissed();
-                            }
-                        });
-                        IronSource.loadInterstitial();
-                        break;
-
-                    case WORTISE:
-                        wortiseInterstitialAd = new com.wortise.ads.interstitial.InterstitialAd(activity, wortiseInterstitialId);
-                        wortiseInterstitialAd.setListener(new com.wortise.ads.interstitial.InterstitialAd.Listener() {
-                            @Override
-                            public void onInterstitialClicked(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-
-                            @Override
-                            public void onInterstitialDismissed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                loadInterstitialAd(onInterstitialAdDismissedListener);
-                                onInterstitialAdDismissedListener.onInterstitialAdDismissed();
-                                Log.d(TAG, "[Wortise] [Backup] Interstitial Ad dismissed");
-                            }
-
-                            @Override
-                            public void onInterstitialFailed(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd, @NonNull com.wortise.ads.AdError adError) {
-                                Log.d(TAG, "[Wortise] [Backup] Failed to load Interstitial Ad");
-                            }
-
-                            @Override
-                            public void onInterstitialLoaded(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-                                Log.d(TAG, "[Wortise] [Backup] Interstitial Ad loaded");
-                            }
-
-                            @Override
-                            public void onInterstitialShown(@NonNull com.wortise.ads.interstitial.InterstitialAd interstitialAd) {
-
-                            }
-                        });
-                        wortiseInterstitialAd.loadAd();
-                        break;
-
                     case NONE:
                         //do nothing
                         break;
@@ -1773,23 +1443,6 @@ public class InterstitialAd {
                             break;
 
                         case IRONSOURCE:
-                        case FAN_BIDDING_IRONSOURCE:
-                            if (IronSource.isInterstitialReady()) {
-                                IronSource.showInterstitial(ironSourceInterstitialId);
-                                onInterstitialAdShowedListener.onInterstitialAdShowed();
-                            } else {
-                                showBackupInterstitialAd(onInterstitialAdShowedListener, onInterstitialAdDismissedListener);
-                            }
-                            break;
-
-                        case WORTISE:
-                            if (wortiseInterstitialAd != null && wortiseInterstitialAd.isAvailable()) {
-                                wortiseInterstitialAd.showAd();
-                                onInterstitialAdShowedListener.onInterstitialAdShowed();
-                            } else {
-                                showBackupInterstitialAd(onInterstitialAdShowedListener, onInterstitialAdDismissedListener);
-                            }
-                            break;
                     }
                     counter = 1;
                 } else {
@@ -1911,20 +1564,6 @@ public class InterstitialAd {
                         //Mopub has been acquired by AppLovin
                         break;
 
-                    case IRONSOURCE:
-                    case FAN_BIDDING_IRONSOURCE:
-                        if (IronSource.isInterstitialReady()) {
-                            IronSource.showInterstitial(ironSourceInterstitialId);
-                            onInterstitialAdShowedListener.onInterstitialAdShowed();
-                        }
-                        break;
-
-                    case WORTISE:
-                        if (wortiseInterstitialAd != null && wortiseInterstitialAd.isAvailable()) {
-                            wortiseInterstitialAd.showAd();
-                            onInterstitialAdShowedListener.onInterstitialAdShowed();
-                        }
-                        break;
 
                     case NONE:
                         //do nothing
